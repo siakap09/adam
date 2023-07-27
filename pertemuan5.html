@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+    input [type=text], select {
+      width:100%;
+      padding:12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border-radius: 4px;
+      box-sizing:border-box;
+    }
+
+    input[type=submit] {
+      width: 100%;
+      background-color: azure;
+      color:#3c763d ;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input [type=submit] hover {
+      background-color:blue;
+    }
+
+    div {
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+  </style>
+  <h2>membuat form dengan html dan css</h2>
+  <div>
+    <form action="send.php">
+      <label for="fname">front name</label>
+      <input type="text" id="fname" name="first name" placeholder="your name">
+    </form>
+    <form>
+      <label for="lname">last name</label>
+      <input type="text" id="lname" name="last name" placeholder="last name">
+    </form>
+    
+      <label for="country">state</label>
+      <select id="country" name="country">
+        <option value="shah alam">shah alam</option>
+        <option value="putrajaya">putrajaya</option>
+        <option value="kuala lumpur">kuala lumpur</option>
+    </select>   
+    </form>
+  </div>
+</body>
+</html>

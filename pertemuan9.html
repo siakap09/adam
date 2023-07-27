@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<head>
+    <title>Latihan event</title>
+</head>
+<body>
+    <script language="javascript">
+        function warna(pilihan){
+            alert("anda memilih warna " + pilihan);
+            document.bgColor = pilihan;
+        }
+    </script>
+
+    <h1  align="center">Latihan event OnClick</h1>
+    <hr width="500" color="black" noshade>
+    <h3 align="center">Pilih warna favoritmu.</h3>
+    <br>
+        <form>
+            <input type="button" value="Biru" onClick="warna('lightblue')">
+            <input type="button" value="Pink" onClick="warna('pink')">
+            <input type="button" value="coklat" onClick="warna('burlywood')">
+            <input type="button" value="kelabu" onClick="warna('darkgray')">
+            <input type="button" value="oranye" onClick="warna('peachpuff')">
+            <input type="button" value="putih" onClick="warna('white')">
+        </form>
+        <br/>
+        <form>
+            <img name="coolfan" src="fan-off.gif" width=61 height=72></form></br>
+            <input type="button" value=" off " onClick="coolfan.src='fan-off.gif'">
+            <INPUT TYPE="button" value=" on " onClick="coolfan.src='fan-on.gif'">
+        </form>
+    </center>
+    <hr width="500" color="black" noshade>
+
+    <h3 align="center">Latihan objek date</h3>
+    <script language="javascript">
+        var hari = new Array("senin","selasa","rabu","kamis","jumat","sabtu","minggu");
+        var bulan = new Array("januari","februari","maret","april","mei","juni","juli","agustus","september","oktober","november","desember");
+        var t = new Date();
+        var hari_ini =hari[t.getDay()-1];
+        var tanggal = t.getDate();
+        var bulan_ini = bulan[t.getMonth()];
+        var tahun = t.getFullYear();
+        var jam = t.getHours();
+        var menit =  t.getMinutes();
+        var detik = t.getSeconds();
+        document.writeln("<font size=5 face=arial>");
+        document.writeln("<b><center>Sekarang adalah hari " + hari_ini + ", " + tanggal +" "+ bulan_ini +" " + tahun);
+        document.writeln("<hr width=700>");
+        document.writeln("</font>");
+        document.writeln("<font size=3 face=arial>");
+        document.writeln("<b><center>Jam sekarang = "+ jam +":"+ menit +":"+ detik);
+        document.writeln("</font>");
+    </script>
+
+<h3>Latihan objek Array 2</h3>
+pemanggilan data array dengan perintah perulangan For<br/>
+<script language="javascript">
+    var nilai = new Array(3);
+    nilai [0] = "A";
+    nilai [1] = "B";
+    nilai [2] = "C";
+
+    for(a=0; a<3; ++a){
+        document.writeln("<b>Nilai ke "+ [a+1] +" : "+nilai[a]+"</b><br/>");
+    }
+</script>
+
+<script language="javascript">
+    document.writeln("<h2>Latihan perulangan for</h2>");
+    document.writeln("---------------------------------");
+    for (i=1; i<=5; i++){
+        document.writeln("<pre>");
+        document.writeln("perulangan ke : " + i + "</br>");
+        document.writeln("<pre>");
+    }
+    document.writeln("---------------------------------");
+</script>
+</body>
+<html></html>
