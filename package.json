@@ -1,0 +1,36 @@
+{
+  "name": "whatsapp-chatbot-tracker",
+  "version": "1.0.0",
+  "description": "WhatsApp chatbot automation with Google Sheets tracking",
+  "main": "src/bot.js",
+  "scripts": {
+    "start": "node src/bot.js",
+    "dev": "nodemon src/bot.js",
+    "setup": "node setup.js",
+    "analytics": "node scripts/analytics.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "whatsapp",
+    "chatbot",
+    "automation",
+    "google-sheets",
+    "tracking"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "whatsapp-web.js": "^1.23.0",
+    "googleapis": "^126.0.1",
+    "qrcode-terminal": "^0.12.0",
+    "dotenv": "^16.3.1",
+    "moment": "^2.29.4",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
