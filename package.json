@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/bot.js",
     "dev": "nodemon src/bot.js",
-    "setup": "node setup.js"
+    "setup": "node setup.js",
+    "analytics": "node scripts/analytics.js",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "keywords": [
     "whatsapp",

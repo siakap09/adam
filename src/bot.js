@@ -3,6 +3,7 @@ const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const moment = require('moment');
 const GoogleSheetsManager = require('./sheets');
+const WebhookServer = require('./webhook');
 const logger = require('./utils/logger');
 
 class WhatsAppBot {
@@ -25,9 +26,10 @@ class WhatsAppBot {
         });
 
         this.sheetsManager = new GoogleSheetsManager();
+        this.webhookServer = new WebhookServer(this);
         this.contactHistory = new Map(); // Cache for contact history
         this.messageStartTimes = new Map(); // Track message response times
-        
+
         this.setupEventHandlers();
     }
 
@@ -43,7 +45,8 @@ class WhatsAppBot {
             logger.success('WhatsApp bot is ready!');
             try {
                 await this.sheetsManager.initialize();
-                logger.success('Bot fully initialized with Google Sheets integration');
+                this.webhookServer.start();
+                logger.success('Bot fully initialized with Google Sheets integration and webhook server');
             } catch (error) {
                 logger.error('Failed to initialize Google Sheets integration', { error: error.message });
             }
@@ -80,7 +83,7 @@ class WhatsAppBot {
             const chat = await message.getChat();
             const phoneNumber = contact.number;
             const contactName = contact.pushname || contact.name || 'Unknown';
-            
+
             // Skip if message is from status broadcast or groups (optional)
             if (message.from === 'status@broadcast' || chat.isGroup) {
                 return;
@@ -95,15 +98,23 @@ class WhatsAppBot {
                 from: phoneNumber,
                 name: contactName,
                 type: message.type,
-                body: message.body?.substring(0, 100) + (message.body?.length > 100 ? '...' : '')
+                body: message.body?.substring(0, 100) + (message.body?.length > 100 ? '...' : ''),
+                timestamp: new Date().toISOString()
             });
 
             // Check if this is first contact
             const isFirstContact = await this.isFirstTimeContact(phoneNumber);
-            
+
             // Record message start time for response tracking
             const messageId = message.id._serialized;
             this.messageStartTimes.set(messageId, Date.now());
+
+            // Get message location if available
+            const location = message.location ? {
+                latitude: message.location.latitude,
+                longitude: message.location.longitude,
+                description: message.location.description
+            } : null;
 
             // Log interaction to Google Sheets
             await this.logMessageToSheets({
@@ -112,7 +123,9 @@ class WhatsAppBot {
                 messageType: message.type,
                 messageContent: this.getMessageContent(message),
                 isFirstContact,
-                status: 'Received'
+                status: 'Received',
+                location: location,
+                messageId: messageId
             });
 
             // Handle different message types
@@ -183,28 +196,40 @@ class WhatsAppBot {
 
     generateAutoReply(message) {
         const messageBody = message.body.toLowerCase();
-        
+
         // Business hours check
         if (!this.isBusinessHours()) {
             return 'Thank you for your message! We are currently outside business hours. We will respond during our next business day (9 AM - 5 PM, Monday-Friday).';
         }
 
-        // Keyword-based responses
-        if (messageBody.includes('price') || messageBody.includes('cost')) {
-            return 'Thank you for your inquiry about pricing! Our team will provide you with detailed pricing information shortly.';
+        // Keyword-based responses with more variety
+        if (messageBody.includes('price') || messageBody.includes('cost') || messageBody.includes('quote')) {
+            return 'Thank you for your inquiry about pricing! Our team will provide you with detailed pricing information shortly. 💰';
         }
-        
-        if (messageBody.includes('support') || messageBody.includes('help')) {
-            return 'We\'re here to help! Our support team has received your message and will assist you as soon as possible.';
+
+        if (messageBody.includes('support') || messageBody.includes('help') || messageBody.includes('problem')) {
+            return 'We\'re here to help! 🤝 Our support team has received your message and will assist you as soon as possible.';
         }
-        
-        if (messageBody.includes('order') || messageBody.includes('purchase')) {
-            return 'Thank you for your interest in placing an order! Our sales team will contact you shortly to assist with your purchase.';
+
+        if (messageBody.includes('order') || messageBody.includes('purchase') || messageBody.includes('buy')) {
+            return 'Thank you for your interest in placing an order! 🛒 Our sales team will contact you shortly to assist with your purchase.';
+        }
+
+        if (messageBody.includes('info') || messageBody.includes('information') || messageBody.includes('details')) {
+            return 'Thank you for your interest! 📋 We\'ll provide you with detailed information about our services shortly.';
+        }
+
+        if (messageBody.includes('appointment') || messageBody.includes('meeting') || messageBody.includes('schedule')) {
+            return 'We\'d be happy to schedule a meeting with you! 📅 Our team will contact you to arrange a convenient time.';
+        }
+
+        if (messageBody.includes('complaint') || messageBody.includes('issue') || messageBody.includes('dissatisfied')) {
+            return 'We sincerely apologize for any inconvenience. 🙏 Your concern is important to us and will be addressed by our management team promptly.';
         }
 
         // Default auto-reply
-        return process.env.AUTO_REPLY_MESSAGE || 
-            'Thank you for your message! We\'ve received it and will respond as soon as possible.';
+        return process.env.AUTO_REPLY_MESSAGE ||
+            'Thank you for your message! We\'ve received it and will respond as soon as possible. 😊';
     }
 
     async handleSpecialCommands(message, contact) {

@@ -4,14 +4,18 @@ This project provides a comprehensive WhatsApp chatbot automation solution that 
 
 ## Features
 
-- 🤖 **Automated WhatsApp Bot** - Responds to messages automatically
-- 📊 **Google Sheets Integration** - Logs all interactions for tracking
-- 👥 **First Contact Detection** - Identifies and handles new customers
-- ⏱️ **Response Time Tracking** - Monitors bot performance
+- 🤖 **Automated WhatsApp Bot** - Responds to messages automatically with smart keyword detection
+- 📊 **Google Sheets Integration** - Logs all interactions for tracking and CRM
+- 👥 **First Contact Detection** - Identifies and handles new customers with special messages
+- ⏱️ **Response Time Tracking** - Monitors bot performance and response efficiency
 - 🕐 **Business Hours Support** - Different responses during/outside business hours
-- 📱 **Multi-media Support** - Handles text, images, documents, audio, video
+- 📱 **Multi-media Support** - Handles text, images, documents, audio, video, locations
 - 🔧 **Admin Commands** - Built-in status and help commands
 - 📝 **Comprehensive Logging** - File and console logging with different levels
+- 🌐 **Web Dashboard** - Built-in web interface for monitoring and management
+- 📈 **Analytics & Reporting** - Daily and weekly analytics with insights
+- 🔗 **Webhook Support** - REST API for external integrations
+- 📧 **Smart Auto-Replies** - Context-aware responses with emoji support
 
 ## Prerequisites
 
